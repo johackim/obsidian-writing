@@ -1,0 +1,40 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "globals": {
+        "createDiv": true
+    },
+    "rules": {
+        "indent": [2, 4, { "SwitchCase": 1 }],
+        "max-len": [0],
+        "object-curly-newline": [0],
+        "import/no-extraneous-dependencies": [0],
+        "no-restricted-syntax": [0],
+        "class-methods-use-this": [0],
+        "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
+        "react/jsx-props-no-spreading": [0],
+        "react/jsx-indent-props": [2, 4],
+        "react/jsx-indent": ["error", 4],
+        "react/prop-types": [0],
+        "react/no-unescaped-entities": [0],
+        "react/function-component-definition": [0],
+        "react/react-in-jsx-scope": [0]
+    }
+}
