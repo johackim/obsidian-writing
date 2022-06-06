@@ -1,14 +1,14 @@
 import { ItemView, parseFrontMatterTags, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
 
-export const VIEW_TYPE_BOOK = 'book-plugin';
+export const VIEW_TYPE_BOOK = 'book-chapters';
 
-export class BookView extends ItemView {
+export class ChaptersView extends ItemView {
     getViewType() {
         return VIEW_TYPE_BOOK;
     }
 
     getDisplayText() {
-        return 'Book plugin';
+        return 'Book Chapters';
     }
 
     getIcon() {
