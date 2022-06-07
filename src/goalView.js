@@ -7,9 +7,15 @@ import { countWords } from './utils';
 export const VIEW_TYPE_GOAL = 'book-goal';
 
 export class GoalView extends ItemView {
-    constructor(leaf, todaysWordCount) {
+    constructor(leaf, plugin) {
         super(leaf);
-        this.todaysWordCount = todaysWordCount;
+        this.todaysWordCount = plugin.settings.todaysWordCount;
+
+        this.registerInterval(
+            window.setInterval(() => {
+                this.todaysWordCount = plugin.settings.todaysWordCount;
+            }, 5000),
+        );
     }
 
     getViewType() {
