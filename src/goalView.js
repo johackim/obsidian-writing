@@ -52,7 +52,7 @@ export class GoalView extends ItemView {
 
         if (!currentBook) {
             ReactDOM.render(
-                <div className="pane-empty">No chapters found.</div>,
+                <div className="pane-empty">No books found.</div>,
                 (this || that).containerEl.children[1],
             );
             return;
@@ -67,7 +67,7 @@ export class GoalView extends ItemView {
             const content = targetFile ? await (this || that).app.vault.cachedRead(targetFile) : '';
             const words = countWords(content);
             totalWords += words;
-            todayWords += this.todaysWordCount[file]?.current || 0;
+            todayWords += (this.todaysWordCount[file]?.current || 0) - (this.todaysWordCount[file]?.initial || 0);
         }
 
         ReactDOM.render(

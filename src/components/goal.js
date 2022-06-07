@@ -8,12 +8,10 @@ const Goal = ({ words, todayWords, endDate, goal }) => {
 
     return (
         <div>
-            {todayWords ? (
-                <div>
-                    <p><b>Book daily goal</b></p>
-                    <p style={{ fontSize: 12 }}>{`${todayWords} / ${dailyGoal} words`}</p>
-                </div>
-            ) : ''}
+            <div>
+                <p><b>Book daily goal</b></p>
+                <p style={{ fontSize: 12 }}>{`${Math.max(todayWords, 0)} / ${dailyGoal} words`}</p>
+            </div>
 
             <div>
                 <p><b>Book target words</b></p>

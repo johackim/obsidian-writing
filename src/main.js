@@ -55,13 +55,17 @@ export default class BookPlugin extends Plugin {
         if (!openFile) return;
 
         const words = countWords(content);
+        const today = `${(new Date()).getFullYear()}/${(new Date()).getMonth()}/${(new Date()).getDate()}`;
+        const isNewDay = this.settings.today !== today;
+        const initial = this.settings.todaysWordCount[openFile.name]?.initial || words;
 
         this.saveData({
             ...this.settings || { todaysWordCount: {} },
+            today,
             todaysWordCount: {
                 ...this.settings.todaysWordCount,
                 [`${openFile.name}`]: {
-                    initial: 1,
+                    initial: isNewDay ? words : initial,
                     current: words,
                 },
             },

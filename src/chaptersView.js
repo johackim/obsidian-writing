@@ -40,7 +40,7 @@ export class ChaptersView extends ItemView {
         container.empty();
 
         if (!chapters) {
-            container.createEl('div', { cls: 'pane-empty', text: 'No chapters found.' });
+            container.createEl('div', { cls: 'pane-empty', text: 'No books found.' });
             return;
         }
 
