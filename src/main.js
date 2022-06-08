@@ -1,4 +1,4 @@
-import { Plugin, addIcon, MarkdownView } from 'obsidian'; // eslint-disable-line
+import { Plugin, addIcon, parseFrontMatterTags, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
 
 import { VIEW_TYPE_BOOK, ChaptersView } from './chaptersView';
 import { VIEW_TYPE_GOAL, GoalView } from './goalView';
@@ -11,12 +11,8 @@ export default class BookPlugin extends Plugin {
 
         addIcon(ICON_NAME, ICON_SVG);
 
-        this.registerView(VIEW_TYPE_BOOK, (leaf) => new ChaptersView(leaf));
+        this.registerView(VIEW_TYPE_BOOK, (leaf) => new ChaptersView(leaf, this));
         this.registerView(VIEW_TYPE_GOAL, (leaf) => new GoalView(leaf, this));
-
-        this.registerEvent(
-            this.app.workspace.on('quick-preview', this.onQuickPreview.bind(this)),
-        );
 
         if (this.app.workspace.layoutReady) {
             this.initLeaf();
@@ -41,36 +37,54 @@ export default class BookPlugin extends Plugin {
         }
     }
 
-    onQuickPreview(openFile, content) {
-        if (this.app.workspace.getActiveViewOfType(MarkdownView)) {
-            this.saveSettings(openFile, content);
-        }
-    }
-
     async onunload() {
         this.app.workspace.detachLeavesOfType(VIEW_TYPE_BOOK);
+        this.app.workspace.detachLeavesOfType(VIEW_TYPE_GOAL);
     }
 
-    async saveSettings(openFile, content) {
-        if (!openFile) return;
+    getBooks() {
+        const files = this.app.vault.getMarkdownFiles();
 
-        const words = countWords(content);
-        const today = `${(new Date()).getFullYear()}/${(new Date()).getMonth()}/${(new Date()).getDate()}`;
-        const isNewDay = this.settings.today !== today;
-        const initial = this.settings.todaysWordCount[openFile.name]?.initial || words;
-
-        this.saveData({
-            ...this.settings || { todaysWordCount: {} },
-            today,
-            todaysWordCount: {
-                ...this.settings.todaysWordCount,
-                [`${openFile.name}`]: {
-                    initial: isNewDay ? words : initial,
-                    current: words,
-                },
-            },
+        const books = files.filter((file) => {
+            const tags = parseFrontMatterTags(this.app.metadataCache.getFileCache(file)?.frontmatter) || [];
+            return tags.includes('#type/ebook');
         });
 
-        this.settings = await this.loadData();
+        const booksWithChapters = books.map((file) => {
+            const frontmatter = this.app.metadataCache.getFileCache(file)?.frontmatter;
+            const chapters = (parseFrontMatterEntry(frontmatter, 'chapters') || []).flat(2);
+            return { ...file, chapters };
+        });
+
+        return booksWithChapters;
+    }
+
+    async saveSettings() {
+        const books = this.getBooks();
+        const chapters = books.map((book) => book.chapters).flat();
+        const today = `${(new Date()).getFullYear()}/${(new Date()).getMonth()}/${(new Date()).getDate()}`;
+        const isNewDay = this.settings.today !== today;
+
+        for await (const chapter of chapters) {
+            const file = `${chapter}.md`;
+            const targetFile = this.app.vault.getMarkdownFiles().find((f) => f.path === file);
+            const content = targetFile ? await this.app.vault.cachedRead(targetFile) : '';
+            const words = countWords(content);
+            const initial = this.settings.todaysWordCount[targetFile?.name]?.initial || words;
+
+            this.settings = {
+                ...this.settings,
+                todaysWordCount: {
+                    ...this.settings.todaysWordCount,
+                    [`${targetFile?.name}`]: {
+                        initial: isNewDay ? words : initial,
+                        current: words,
+                    },
+                },
+            };
+        }
+
+        this.settings = { ...this.settings, today };
+        this.saveData(this.settings);
     }
 }

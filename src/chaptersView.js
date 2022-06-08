@@ -3,6 +3,11 @@ import { ItemView, parseFrontMatterTags, parseFrontMatterEntry } from 'obsidian'
 export const VIEW_TYPE_BOOK = 'book-chapters';
 
 export class ChaptersView extends ItemView {
+    constructor(leaf, plugin) {
+        super(leaf);
+        this.plugin = plugin;
+    }
+
     getViewType() {
         return VIEW_TYPE_BOOK;
     }
@@ -15,28 +20,16 @@ export class ChaptersView extends ItemView {
         return 'book';
     }
 
-    getBooks() {
-        const files = this.app.vault.getMarkdownFiles().filter((file) => {
-            const tags = parseFrontMatterTags(this.app.metadataCache.getFileCache(file)?.frontmatter) || [];
-            return tags.includes('#type/ebook');
-        }).map((file) => {
-            const frontmatter = this.app.metadataCache.getFileCache(file)?.frontmatter;
-            const chapters = (parseFrontMatterEntry(frontmatter, 'chapters') || []).map(([c]) => c[0]) || [];
-            return { ...file, chapters };
-        });
-
-        return files;
-    }
-
-    init(that) {
-        const openFile = (this || that).app.workspace.getActiveFile();
-        const books = (this || that).getBooks();
-        const currentBook = openFile && books.find((book) => book.chapters.includes(openFile.basename) || book.basename === openFile.basename);
+    init() {
+        const openFile = this.app.workspace.getActiveFile();
+        const books = this.plugin.getBooks();
+        const fileName = openFile?.basename;
+        const currentBook = books.find((book) => book.chapters.includes(fileName) || book.basename === fileName);
         const chapters = currentBook?.chapters;
 
         const root = createDiv({ cls: 'nav-folder mod-root' });
         const children = root.createDiv({ cls: 'nav-folder-children' });
-        const container = (this || that).containerEl.children[1];
+        const container = this.containerEl.children[1];
         container.empty();
 
         if (!chapters) {
@@ -44,7 +37,7 @@ export class ChaptersView extends ItemView {
             return;
         }
 
-        chapters.forEach((chapter) => {
+        for (const chapter of chapters) {
             const navFile = children.createDiv({ cls: 'nav-file' });
             const navFileTitle = navFile.createDiv({ cls: 'nav-file-title', attr: { style: 'padding-left: 0px;' } });
 
@@ -55,23 +48,19 @@ export class ChaptersView extends ItemView {
             });
 
             navFile.addEventListener('click', async () => {
-                const targetFile = (this || that).app.vault.getFiles().find((f) => f.path === `${chapter}.md`)
-                 || await (this || that).app.vault.create(`${chapter}.md`, '');
-                const leaf = (this || that).app.workspace.getMostRecentLeaf();
+                const targetFile = this.app.vault.getMarkdownFiles().find((f) => f.path === `${chapter}.md`)
+                 || await this.app.vault.create(`${chapter}.md`, '');
+                const leaf = this.app.workspace.getMostRecentLeaf();
                 leaf.openFile(targetFile);
             });
-        });
+        }
 
         container.createEl('p', { text: currentBook.basename, attr: { style: 'margin-top: 0px;' } });
         container.appendChild(root);
     }
 
-    load() {
-        super.load();
-        this.registerEvent(this.app.workspace.on('file-open', () => this.init(this)));
-    }
-
     onOpen() {
         this.init();
+        this.registerEvent(this.app.workspace.on('file-open', this.init.bind(this)));
     }
 }
