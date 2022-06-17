@@ -1,4 +1,4 @@
-import { ItemView, parseFrontMatterTags, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
+import { ItemView } from 'obsidian'; // eslint-disable-line
 
 export const VIEW_TYPE_BOOK = 'book-chapters';
 

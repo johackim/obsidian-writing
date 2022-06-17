@@ -1,4 +1,4 @@
-import { ItemView, parseFrontMatterTags, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
+import { ItemView, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -54,8 +54,11 @@ export class GoalView extends ItemView {
             todayWords += (todaysWordCount[file]?.current || 0) - (todaysWordCount[file]?.initial || 0);
         }
 
+        const frontmatter = this.app.metadataCache.getFileCache(currentBook)?.frontmatter;
+        const goal = parseFrontMatterEntry(frontmatter, 'goal');
+
         ReactDOM.render(
-            <Goal goal={20000} words={totalWords} todayWords={todayWords} />,
+            <Goal goal={goal || 20000} words={totalWords} todayWords={todayWords} />,
             this.containerEl.children[1],
         );
     }

@@ -47,7 +47,7 @@ export default class BookPlugin extends Plugin {
 
         const books = files.filter((file) => {
             const tags = parseFrontMatterTags(this.app.metadataCache.getFileCache(file)?.frontmatter) || [];
-            return tags.includes('#type/ebook');
+            return tags.includes('#type/book');
         });
 
         const booksWithChapters = books.map((file) => {
