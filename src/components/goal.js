@@ -12,15 +12,15 @@ const Goal = ({ words, todayWords, endDate, goal }) => {
     return (
         <div style={{ display: 'grid', gap: '2rem' }}>
             <div>
-                <p style={{ margin: 0 }}><b>Book daily goal</b></p>
-                <p style={{ marginTop: 0, fontSize: 12 }}>{`${dailyPercentage}% completed (${Math.max(todayWords, 0)} / ${dailyGoal} words)`}</p>
-                <Progress percentage={dailyPercentage} />
+                <p style={{ margin: 0 }}><b>Book total goal</b></p>
+                <p style={{ marginTop: 0, fontSize: 12 }}>{`${totalPercentage}% completed (${words} / ${goal} words)`}</p>
+                <Progress percentage={totalPercentage} />
             </div>
 
             <div>
-                <p style={{ margin: 0 }}><b>Book target words</b></p>
-                <p style={{ marginTop: 0, fontSize: 12 }}>{`${totalPercentage}% completed (${words} / ${goal} words)`}</p>
-                <Progress percentage={totalPercentage} />
+                <p style={{ margin: 0 }}><b>Book daily goal</b></p>
+                <p style={{ marginTop: 0, fontSize: 12 }}>{`${dailyPercentage}% completed (${todayWords} / ${dailyGoal} words)`}</p>
+                <Progress percentage={Math.max(dailyPercentage, 0)} />
             </div>
         </div>
     );

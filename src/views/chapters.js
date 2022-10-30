@@ -55,7 +55,7 @@ export class ChaptersView extends ItemView {
             });
         }
 
-        container.createEl('p', { text: currentBook.basename, attr: { style: 'margin-top: 0px;' } });
+        container.createEl('p', { text: `Chapters of "${currentBook.basename}"`, attr: { style: 'margin-top: 0px;' } });
         container.appendChild(root);
     }
 
