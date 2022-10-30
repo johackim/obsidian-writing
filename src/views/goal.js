@@ -2,8 +2,8 @@ import { ItemView, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-li
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import Goal from './components/goal';
-import { countWords } from './utils';
+import Goal from '../components/goal';
+import { countWords } from '../utils';
 
 export const VIEW_TYPE_GOAL = 'book-goal';
 

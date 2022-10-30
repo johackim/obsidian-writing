@@ -1,7 +1,7 @@
 import { Plugin, addIcon, parseFrontMatterTags, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
 
-import { VIEW_TYPE_BOOK, ChaptersView } from './chaptersView';
-import { VIEW_TYPE_GOAL, GoalView } from './goalView';
+import { VIEW_TYPE_BOOK, ChaptersView } from './views/chapters';
+import { VIEW_TYPE_GOAL, GoalView } from './views/goal';
 import { ICON_NAME, ICON_SVG } from './constants';
 import { countWords } from './utils';
 
