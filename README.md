@@ -1,21 +1,19 @@
-## Obsidian-writing
+## 📔 Obsidian-writing
 
 Write and format your next book directly from Obsidian
 
-## Features
+## ✨ Features
 
 - [ ] Goal tracking
 - [ ] Word counter
 - [ ] Export to PDF, EPUB, MOBI
 - [ ] Writing habit tracker
 
-## Quick start
+## 📦 Installation
 
-1. [Install Obsidian](https://obsidian.md/)
-2. [Install obsidian-writing](https://obsidian.md/plugins?id=writing)
-3. And write your next book!
+Install the plugin [from this link](https://obsidian.md/plugins?id=writing) or from the Obsidian community [plugins tab](https://obsidian.md/plugins) (Search for "Writing").
 
-## Support me
+## 🎁 Support me
 
 I'd love to work on this project, but my time on this earth is limited, support my work to give me more time!
 
@@ -29,7 +27,7 @@ Please support me with a one-time or a monthly donation and help me continue my 
 [![Mastodon](https://img.shields.io/mastodon/follow/1631?domain=https%3A%2F%2Fmastodon.ethibox.fr&style=social)](https://mastodon.ethibox.fr/@johackim)
 [![Twitter](https://img.shields.io/twitter/follow/_johackim?style=social)](https://twitter.com/_johackim)
 
-## License
+## 📜 License
 
 This project is licensed under the GNU GPL v3.0 - see the [LICENSE.txt](https://raw.githubusercontent.com/johackim/obsidian-writing/master/LICENSE.txt) file for details
 
