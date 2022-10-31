@@ -13,6 +13,10 @@ Write and format your next book directly from Obsidian
 
 Install the plugin [from this link](https://obsidian.md/plugins?id=writing) or from the Obsidian community [plugins tab](https://obsidian.md/plugins) (Search for "Writing").
 
+## 📖 Usage
+
+![Screencast](https://raw.githubusercontent.com/johackim/obsidian-writing/master/screencast.gif)
+
 ## 🎁 Support me
 
 I'd love to work on this project, but my time on this earth is limited, support my work to give me more time!
