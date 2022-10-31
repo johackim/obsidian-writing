@@ -31,6 +31,7 @@
         "@rollup/plugin-babel": "^5.3.1",
         "@rollup/plugin-commonjs": "^22.0.0",
         "@rollup/plugin-node-resolve": "^13.3.0",
+        "@semantic-release/exec": "^6.0.3",
         "@semantic-release/git": "^10.0.1",
         "eslint": "^8.17.0",
         "eslint-config-airbnb": "^19.0.4",
@@ -48,32 +49,35 @@
         "semantic-release": "^19.0.5"
     },
     "release": {
+        "tagFormat": "${version}",
         "plugins": [
             "@semantic-release/commit-analyzer",
-            "@semantic-release/release-notes-generator",
             [
-                "@semantic-release/github",
+                "@semantic-release/exec",
                 {
-                    "assets": [
-                        {
-                            "path": "manifest.json",
-                            "label": "manifest.json"
-                        },
-                        {
-                            "path": "main.js",
-                            "label": "main.js"
-                        }
-                    ]
+                    "prepareCmd": "sed -i -e '0,/${lastRelease.version}/s//${nextRelease.version}/' manifest.json"
                 }
             ],
             [
                 "@semantic-release/git",
                 {
                     "assets": [
-                        "package.json",
                         "manifest.json"
                     ],
                     "message": "chore(release): ${nextRelease.version}"
+                }
+            ],
+            [
+                "@semantic-release/github",
+                {
+                    "assets": [
+                        {
+                            "path": "manifest.json"
+                        },
+                        {
+                            "path": "main.js"
+                        }
+                    ]
                 }
             ]
         ]
