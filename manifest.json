@@ -4,7 +4,7 @@
 	"version": "1.0.1",
 	"minAppVersion": "0.12.0",
 	"description": "Write and format your next book directly from Obsidian",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
+	"author": "johackim",
+	"authorUrl": "https://johackim.com",
 	"isDesktopOnly": false
 }
