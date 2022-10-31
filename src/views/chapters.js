@@ -1,34 +1,32 @@
 import { ItemView } from 'obsidian'; // eslint-disable-line
 
-export const VIEW_TYPE_BOOK = 'book-chapters';
+import { ICON_NAME, VIEW_TYPE_CHAPTERS } from '../constants';
 
-export class ChaptersView extends ItemView {
+export default class ChaptersView extends ItemView {
     constructor(leaf, plugin) {
         super(leaf);
         this.plugin = plugin;
     }
 
     getViewType() {
-        return VIEW_TYPE_BOOK;
+        return VIEW_TYPE_CHAPTERS;
     }
 
     getDisplayText() {
-        return 'Book Chapters';
+        return 'Book chapters';
     }
 
     getIcon() {
-        return 'book';
+        return ICON_NAME;
     }
 
-    init() {
-        const openFile = this.app.workspace.getActiveFile();
+    async refresh() {
+        const activeFile = this.app.workspace.getActiveFile();
         const books = this.plugin.getBooks();
-        const fileName = openFile?.basename;
+        const fileName = activeFile?.basename;
         const currentBook = books.find((book) => book.chapters.includes(fileName) || book.basename === fileName);
         const chapters = currentBook?.chapters;
 
-        const root = createDiv({ cls: 'nav-folder mod-root' });
-        const children = root.createDiv({ cls: 'nav-folder-children' });
         const container = this.containerEl.children[1];
         container.empty();
 
@@ -37,11 +35,15 @@ export class ChaptersView extends ItemView {
             return;
         }
 
-        for (const chapter of chapters) {
-            const navFile = children.createDiv({ cls: 'nav-file' });
-            const navFileTitle = navFile.createDiv({ cls: 'nav-file-title', attr: { style: 'padding-left: 0px;' } });
+        container.createEl('p', { text: `Chapters of "${currentBook.basename}"`, attr: { style: 'margin-top: 0px;' } });
+        container.createEl('div', { cls: 'nav-folder mod-root' });
+        container.createEl('div', { cls: 'nav-folder-children' });
 
-            navFileTitle.createDiv({
+        for (const chapter of chapters) {
+            const navFile = container.createEl('div', { cls: 'nav-file' });
+            const navFileTitle = navFile.createEl('div', { cls: 'nav-file-title', attr: { style: 'padding-left: 0px;' } });
+
+            navFileTitle.createEl('div', {
                 text: chapter,
                 cls: 'nav-file-title-content',
                 attr: { style: 'border-left: none; padding-left: 0px;' },
@@ -54,13 +56,11 @@ export class ChaptersView extends ItemView {
                 leaf.openFile(targetFile);
             });
         }
-
-        container.createEl('p', { text: `Chapters of "${currentBook.basename}"`, attr: { style: 'margin-top: 0px;' } });
-        container.appendChild(root);
     }
 
-    onOpen() {
-        this.init();
-        this.registerEvent(this.app.workspace.on('file-open', this.init.bind(this)));
+    async onOpen() {
+        await this.refresh();
+        this.registerEvent(this.app.vault.on('modify', this.refresh.bind(this)));
+        this.registerEvent(this.app.workspace.on('file-open', this.refresh.bind(this)));
     }
 }

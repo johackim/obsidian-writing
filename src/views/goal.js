@@ -1,13 +1,13 @@
 import { ItemView, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import Goal from '../components/goal';
 import { countWords } from '../utils';
+import { ICON_NAME, DEFAULT_GOAL, VIEW_TYPE_GOAL } from '../constants';
 
-export const VIEW_TYPE_GOAL = 'book-goal';
-
-export class GoalView extends ItemView {
+export default class GoalView extends ItemView {
     constructor(leaf, plugin) {
         super(leaf);
         this.plugin = plugin;
@@ -18,15 +18,15 @@ export class GoalView extends ItemView {
     }
 
     getDisplayText() {
-        return 'Book Goal';
+        return 'Book goal';
     }
 
     getIcon() {
-        return 'book';
+        return ICON_NAME;
     }
 
-    async init() {
-        await this.plugin.saveSettings();
+    async refresh() {
+        this.plugin.saveSettings();
         const { todaysWordCount } = this.plugin.settings;
         const openFile = this.app.workspace.getActiveFile();
         const fileName = openFile?.basename;
@@ -35,11 +35,7 @@ export class GoalView extends ItemView {
         const chapters = currentBook?.chapters;
 
         if (!currentBook) {
-            ReactDOM.render(
-                <div className="pane-empty">No books found.</div>,
-                this.containerEl.children[1],
-            );
-            return;
+            return this.root.render(<div className="pane-empty">No books found.</div>);
         }
 
         let totalWords = 0;
@@ -54,22 +50,16 @@ export class GoalView extends ItemView {
             todayWords += (todaysWordCount[file]?.current || 0) - (todaysWordCount[file]?.initial || 0);
         }
 
-        const frontmatter = this.app.metadataCache.getFileCache(currentBook)?.frontmatter;
-        const goal = parseFrontMatterEntry(frontmatter, 'goal');
+        const { frontmatter } = this.app.metadataCache.getFileCache(currentBook);
+        const goal = parseFrontMatterEntry(frontmatter, 'goal') || DEFAULT_GOAL;
 
-        ReactDOM.render(
-            <Goal goal={goal || 20000} words={totalWords} todayWords={todayWords} />,
-            this.containerEl.children[1],
-        );
+        return this.root.render(<Goal goal={goal} totalWords={totalWords} todayWords={todayWords} />);
     }
 
     async onOpen() {
-        this.init();
-        this.registerEvent(this.app.vault.on('modify', this.init.bind(this)));
-        this.registerEvent(this.app.workspace.on('file-open', this.init.bind(this)));
-    }
-
-    async onClose() {
-        ReactDOM.unmountComponentAtNode(this.containerEl.children[1]);
+        this.root = createRoot(this.containerEl.children[1]);
+        await this.refresh();
+        this.registerEvent(this.app.vault.on('modify', this.refresh.bind(this)));
+        this.registerEvent(this.app.workspace.on('file-open', this.refresh.bind(this)));
     }
 }

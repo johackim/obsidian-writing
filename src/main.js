@@ -1,17 +1,17 @@
 import { Plugin, addIcon, parseFrontMatterTags, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
 
-import { VIEW_TYPE_BOOK, ChaptersView } from './views/chapters';
-import { VIEW_TYPE_GOAL, GoalView } from './views/goal';
-import { ICON_NAME, ICON_SVG } from './constants';
+import ChaptersView from './views/chapters';
+import GoalView from './views/goal';
+import { DEFAULT_SETTINGS, ICON_NAME, ICON_SVG, VIEW_TYPE_GOAL, VIEW_TYPE_CHAPTERS } from './constants';
 import { countWords } from './utils';
 
 export default class BookPlugin extends Plugin {
     async onload() {
-        this.settings = await this.loadData();
+        await this.loadSettings();
 
         addIcon(ICON_NAME, ICON_SVG);
 
-        this.registerView(VIEW_TYPE_BOOK, (leaf) => new ChaptersView(leaf, this));
+        this.registerView(VIEW_TYPE_CHAPTERS, (leaf) => new ChaptersView(leaf, this));
         this.registerView(VIEW_TYPE_GOAL, (leaf) => new GoalView(leaf, this));
 
         if (this.app.workspace.layoutReady) {
@@ -22,9 +22,9 @@ export default class BookPlugin extends Plugin {
     }
 
     initLeaf() {
-        if (!this.app.workspace.getLeavesOfType(VIEW_TYPE_BOOK).length) {
+        if (!this.app.workspace.getLeavesOfType(VIEW_TYPE_CHAPTERS).length) {
             this.app.workspace.getLeftLeaf(false).setViewState({
-                type: VIEW_TYPE_BOOK,
+                type: VIEW_TYPE_CHAPTERS,
                 active: true,
             });
         }
@@ -38,7 +38,7 @@ export default class BookPlugin extends Plugin {
     }
 
     async onunload() {
-        this.app.workspace.detachLeavesOfType(VIEW_TYPE_BOOK);
+        this.app.workspace.detachLeavesOfType(VIEW_TYPE_CHAPTERS);
         this.app.workspace.detachLeavesOfType(VIEW_TYPE_GOAL);
     }
 
@@ -46,17 +46,20 @@ export default class BookPlugin extends Plugin {
         const files = this.app.vault.getMarkdownFiles();
 
         const books = files.filter((file) => {
-            const tags = parseFrontMatterTags(this.app.metadataCache.getFileCache(file)?.frontmatter) || [];
-            return tags.includes('#type/book');
+            const { frontmatter } = this.app.metadataCache.getFileCache(file);
+            const tags = parseFrontMatterTags(frontmatter) || [];
+            return tags.includes('#book');
         });
 
-        const booksWithChapters = books.map((file) => {
-            const frontmatter = this.app.metadataCache.getFileCache(file)?.frontmatter;
+        return books.map((file) => {
+            const { frontmatter } = this.app.metadataCache.getFileCache(file);
             const chapters = (parseFrontMatterEntry(frontmatter, 'chapters') || []).flat(2);
             return { ...file, chapters };
         });
+    }
 
-        return booksWithChapters;
+    async loadSettings() {
+        this.settings = { ...DEFAULT_SETTINGS, ...await this.loadData() };
     }
 
     async saveSettings() {
@@ -76,7 +79,7 @@ export default class BookPlugin extends Plugin {
                 ...this.settings,
                 todaysWordCount: {
                     ...this.settings.todaysWordCount,
-                    [`${targetFile?.name}`]: {
+                    [file]: {
                         initial: isNewDay ? words : initial,
                         current: words,
                     },
@@ -84,7 +87,7 @@ export default class BookPlugin extends Plugin {
             };
         }
 
-        this.settings = { ...this.settings, today };
+        this.settings = { ...DEFAULT_SETTINGS, ...this.settings, today };
         this.saveData(this.settings);
     }
 }
