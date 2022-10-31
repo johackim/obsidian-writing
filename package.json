@@ -1,39 +1,81 @@
 {
-	"name": "obsidian-book-plugin",
-	"version": "0.1.0",
-	"description": "Book plugin",
-	"main": "main.js",
-	"scripts": {
-		"watch": "rollup -c -w",
-		"build": "rollup -c"
-	},
-	"keywords": [
-		"obsidian",
-		"plugin",
-		"book",
-		"goal"
-	],
-	"author": "johackim",
-	"license": "GPL-3.0",
-	"devDependencies": {
-		"@babel/cli": "^7.17.10",
-		"@babel/core": "^7.18.2",
-		"@babel/preset-react": "^7.17.12",
-		"@rollup/plugin-babel": "^5.3.1",
-		"@rollup/plugin-commonjs": "^22.0.0",
-		"@rollup/plugin-node-resolve": "^13.3.0",
-		"eslint": "^8.17.0",
-		"eslint-config-airbnb": "^19.0.4",
-		"eslint-config-airbnb-base": "^15.0.0",
-		"eslint-plugin-import": "^2.26.0",
-		"eslint-plugin-jsx-a11y": "^6.5.1",
-		"eslint-plugin-react": "^7.30.0",
-		"eslint-plugin-react-hooks": "^4.5.0",
-		"obsidian": "latest",
-		"prettier": "^2.6.2",
-		"react": "^17.0.2",
-		"react-dom": "^17.0.2",
-		"rollup": "^2.75.5",
-		"rollup-plugin-terser": "^7.0.2"
-	}
+    "name": "obsidian-book-plugin",
+    "version": "0.0.0-development",
+    "description": "Book plugin",
+    "main": "main.js",
+    "files": [
+        "main.js",
+        "manifest.json"
+    ],
+    "scripts": {
+        "predeploy": "npm run build",
+        "deploy": "CI=true npx semantic-release",
+        "watch": "rollup -c -w",
+        "build": "rollup -c"
+    },
+    "keywords": [
+        "obsidian",
+        "plugin",
+        "writing",
+        "book",
+        "publish",
+        "habits",
+        "goal"
+    ],
+    "author": "johackim",
+    "license": "GPL-3.0",
+    "devDependencies": {
+        "@babel/cli": "^7.17.10",
+        "@babel/core": "^7.18.2",
+        "@babel/preset-react": "^7.17.12",
+        "@rollup/plugin-babel": "^5.3.1",
+        "@rollup/plugin-commonjs": "^22.0.0",
+        "@rollup/plugin-node-resolve": "^13.3.0",
+        "@semantic-release/git": "^10.0.1",
+        "eslint": "^8.17.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-jsx-a11y": "^6.5.1",
+        "eslint-plugin-react": "^7.30.0",
+        "eslint-plugin-react-hooks": "^4.5.0",
+        "obsidian": "latest",
+        "prettier": "^2.6.2",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "rollup": "^2.75.5",
+        "rollup-plugin-terser": "^7.0.2",
+        "semantic-release": "^19.0.5"
+    },
+    "release": {
+        "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            [
+                "@semantic-release/github",
+                {
+                    "assets": [
+                        {
+                            "path": "manifest.json",
+                            "label": "manifest.json"
+                        },
+                        {
+                            "path": "main.js",
+                            "label": "main.js"
+                        }
+                    ]
+                }
+            ],
+            [
+                "@semantic-release/git",
+                {
+                    "assets": [
+                        "package.json",
+                        "manifest.json"
+                    ],
+                    "message": "chore(release): ${nextRelease.version}"
+                }
+            ]
+        ]
+    }
 }
