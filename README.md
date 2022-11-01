@@ -4,10 +4,12 @@ Write and format your next book directly from Obsidian
 
 ## ✨ Features
 
-- [ ] Goal tracking
-- [ ] Word counter
+- [x] Goal tracking
+- [x] Word counter
 - [ ] Export to PDF, EPUB, MOBI
 - [ ] Writing habit tracker
+- [ ] Kindle Direct Publishing
+- [ ] NaNoWriMo integration
 
 ## 📦 Installation
 
