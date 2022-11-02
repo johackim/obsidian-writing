@@ -1,7 +1,7 @@
 {
-    "name": "obsidian-book-plugin",
+    "name": "obsidian-writing",
     "version": "0.0.0-development",
-    "description": "Book plugin",
+    "description": "Write and format your next book directly from Obsidian",
     "main": "main.js",
     "files": [
         "main.js",

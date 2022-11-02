@@ -1,4 +1,4 @@
-## 📔 Obsidian-writing
+## 📔 Obsidian Writing Plugin
 
 Write and format your next book directly from Obsidian
 
