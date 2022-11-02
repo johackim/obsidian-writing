@@ -1,6 +1,5 @@
 import { ItemView, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 
 import Goal from '../components/goal';
