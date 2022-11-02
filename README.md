@@ -13,7 +13,7 @@ Write and format your next book directly from Obsidian
 
 ## 📦 Installation
 
-Install the plugin [from this link](https://obsidian.md/plugins?id=writing) or from the Obsidian community [plugins tab](https://obsidian.md/plugins) (Search for "Writing").
+Install the plugin [from this link](https://obsidian.md/plugins?id=obsidian-writing) or from the Obsidian community [plugins tab](https://obsidian.md/plugins) (Search for "Writing").
 
 ## 📖 Usage
 
