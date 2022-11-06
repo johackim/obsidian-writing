@@ -1,5 +1,8 @@
 ## 📔 Obsidian Writing Plugin
 
+[![Version](https://img.shields.io/github/tag/johackim/obsidian-writing.svg?label=Version&style=flat&colorA=2B323B&colorB=1e2329)](https://github.com/johackim/obsidian-writing/releases)
+[![License](https://img.shields.io/badge/license-GPL%20v3%2B-yellow.svg?label=License&style=flat&colorA=2B323B&colorB=1e2329)](https://raw.githubusercontent.com/johackim/obsidian-writing/master/LICENSE.txt)
+
 Write and format your next book directly from Obsidian
 
 ## ✨ Features
