@@ -8,7 +8,7 @@ Write and format your next book directly from Obsidian
 - [x] Word counter
 - [ ] Export to PDF, EPUB, MOBI
 - [ ] Writing habit tracker
-- [ ] Kindle Direct Publishing
+- [ ] Book Previewer (Kindle, Kobo, iPad, iPhone, Galaxy S21)
 - [ ] NaNoWriMo integration
 
 ## 📦 Installation

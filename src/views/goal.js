@@ -3,7 +3,8 @@ import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import Goal from '../components/goal';
-import { countWords } from '../utils';
+import Previewer from '../components/previewer';
+import { countWords, markdownToHtml } from '../utils';
 import { ICON_NAME, DEFAULT_GOAL, VIEW_TYPE_GOAL } from '../constants';
 
 export default class GoalView extends ItemView {
@@ -52,7 +53,21 @@ export default class GoalView extends ItemView {
         const { frontmatter } = this.app.metadataCache.getFileCache(currentBook);
         const goal = parseFrontMatterEntry(frontmatter, 'goal') || DEFAULT_GOAL;
 
-        return this.root.render(<Goal goal={goal} totalWords={totalWords} todayWords={todayWords} />);
+        const activeFile = await this.app.workspace.getActiveFile();
+        const markdown = activeFile ? await this.app.vault.cachedRead(activeFile) : false;
+        const content = markdownToHtml(markdown);
+
+        return this.root.render(
+            <>
+                <Goal goal={goal} totalWords={totalWords} todayWords={todayWords} />
+
+                <div style={{ marginTop: '2rem' }}>
+                    <p style={{ marginBottom: 0 }}><b>Book previewer</b></p>
+                    <p style={{ marginTop: 0, fontSize: 12 }}>Preview your book as you write.</p>
+                    <Previewer>{content}</Previewer>
+                </div>
+            </>,
+        );
     }
 
     async onOpen() {
