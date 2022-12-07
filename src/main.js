@@ -86,6 +86,6 @@ export default class BookPlugin extends Plugin {
         }
 
         this.settings = { ...DEFAULT_SETTINGS, ...this.settings, today };
-        this.saveData(this.settings);
+        await this.saveData(this.settings);
     }
 }
