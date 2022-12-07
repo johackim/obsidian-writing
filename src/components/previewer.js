@@ -1,4 +1,5 @@
 import React from 'react';
+import Kindle from '../images/kindle.png';
 
 export default ({ children }) => (
     <div style={{ display: 'flex' }}>
@@ -20,7 +21,7 @@ export default ({ children }) => (
                     backgroundColor: '#d9e0db',
                 }}
             />
-            <img src="https://i.imgur.com/GJntAsg.png" alt="preview" />
+            <img src={Kindle} alt="preview" />
         </div>
     </div>
 );
