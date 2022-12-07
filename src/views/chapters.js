@@ -50,9 +50,9 @@ export default class ChaptersView extends ItemView {
             });
 
             navFile.addEventListener('click', async () => {
-                const targetFile = this.app.vault.getMarkdownFiles().find((f) => f.path === `${chapter}.md`)
+                const targetFile = this.app.vault.getAbstractFileByPath(`${chapter}.md`)
                  || await this.app.vault.create(`${chapter}.md`, '');
-                const leaf = this.app.workspace.getMostRecentLeaf();
+                const leaf = this.app.workspace.getLeaf();
                 leaf.openFile(targetFile);
             });
         }
