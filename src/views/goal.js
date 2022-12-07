@@ -1,10 +1,10 @@
-import { ItemView, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
+import { ItemView, parseFrontMatterEntry, MarkdownRenderer } from 'obsidian'; // eslint-disable-line
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import Goal from '../components/goal';
 import Previewer from '../components/previewer';
-import { countWords, markdownToHtml } from '../utils';
+import { countWords, removeFrontmatter } from '../utils';
 import { ICON_NAME, DEFAULT_GOAL, VIEW_TYPE_GOAL } from '../constants';
 
 export default class GoalView extends ItemView {
@@ -55,7 +55,8 @@ export default class GoalView extends ItemView {
 
         const activeFile = await this.app.workspace.getActiveFile();
         const markdown = activeFile ? await this.app.vault.cachedRead(activeFile) : false;
-        const content = markdownToHtml(markdown);
+        const markdownWithoutFrontmatter = removeFrontmatter(markdown);
+        const content = await MarkdownRenderer.renderMarkdown(markdownWithoutFrontmatter);
 
         return this.root.render(
             <>
