@@ -14,11 +14,9 @@ export default class BookPlugin extends Plugin {
         this.registerView(VIEW_TYPE_CHAPTERS, (leaf) => new ChaptersView(leaf, this));
         this.registerView(VIEW_TYPE_GOAL, (leaf) => new GoalView(leaf, this));
 
-        if (this.app.workspace.layoutReady) {
+        this.app.workspace.onLayoutReady(() => {
             this.initLeaf();
-        } else {
-            this.registerEvent(this.app.workspace.on('layout-ready', this.initLeaf.bind(this)));
-        }
+        });
     }
 
     initLeaf() {
