@@ -6,6 +6,7 @@
     "description": "Write and format your next book directly from Obsidian",
     "author": "johackim",
     "authorUrl": "https://johackim.com",
+    "fundingUrl": "https://www.buymeacoffee.com/johackim",
     "repo": "johackim/obsidian-writing",
     "isDesktopOnly": false
 }
