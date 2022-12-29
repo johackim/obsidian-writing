@@ -1,7 +1,7 @@
 {
     "id": "writing",
     "name": "Writing",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "minAppVersion": "0.16.0",
     "description": "Write and format your next book directly from Obsidian",
     "author": "johackim",
