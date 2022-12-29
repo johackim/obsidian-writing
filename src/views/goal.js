@@ -61,11 +61,13 @@ export default class GoalView extends ItemView {
             <>
                 <Goal goal={goal} totalWords={totalWords} todayWords={todayWords} />
 
-                <div style={{ marginTop: '2rem' }}>
-                    <p style={{ marginBottom: 0 }}><b>Book previewer</b></p>
-                    <p style={{ marginTop: 0, fontSize: 12 }}>Preview your book as you write.</p>
-                    <Previewer>{content}</Previewer>
-                </div>
+                {this.plugin.settings.bookPreviewer && (
+                    <div style={{ marginTop: '2rem' }}>
+                        <p style={{ marginBottom: 0 }}><b>Book previewer</b></p>
+                        <p style={{ marginTop: 0, fontSize: 12 }}>Preview your book as you write.</p>
+                        <Previewer>{content}</Previewer>
+                    </div>
+                )}
             </>,
         );
     }

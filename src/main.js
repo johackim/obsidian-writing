@@ -1,5 +1,6 @@
 import { Plugin, addIcon, parseFrontMatterTags, parseFrontMatterEntry } from 'obsidian'; // eslint-disable-line
 
+import SettingTab from './settings';
 import ChaptersView from './views/chapters';
 import GoalView from './views/goal';
 import { DEFAULT_SETTINGS, ICON_NAME, ICON_SVG, VIEW_TYPE_GOAL, VIEW_TYPE_CHAPTERS } from './constants';
@@ -13,6 +14,8 @@ export default class BookPlugin extends Plugin {
 
         this.registerView(VIEW_TYPE_CHAPTERS, (leaf) => new ChaptersView(leaf, this));
         this.registerView(VIEW_TYPE_GOAL, (leaf) => new GoalView(leaf, this));
+
+        this.addSettingTab(new SettingTab(this.app, this));
 
         this.app.workspace.onLayoutReady(() => {
             this.initLeaf();

@@ -11,4 +11,5 @@ export const VIEW_TYPE_CHAPTERS = 'chapters';
 export const DEFAULT_SETTINGS = {
     todaysWordCount: {},
     today: new Date().toDateString(),
+    kindleImage: false,
 };
