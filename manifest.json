@@ -8,5 +8,5 @@
     "authorUrl": "https://johackim.com",
     "fundingUrl": "https://www.buymeacoffee.com/johackim",
     "repo": "johackim/obsidian-writing",
-    "isDesktopOnly": false
+    "isDesktopOnly": true
 }
